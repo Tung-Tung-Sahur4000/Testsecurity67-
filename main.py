@@ -7,7 +7,7 @@ import asyncio
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
+# Load environment variables from Render
 load_dotenv()
 token = os.getenv('BOT_TOKEN')
 
@@ -45,7 +45,7 @@ async def on_ready():
 @client.command()
 @commands.is_owner()
 async def stop(ctx):
-    await ctx.bot.close()  # Fixed: changed from logout() to close()
+    await ctx.bot.close()
     print(Fore.GREEN + f"{client.user.name} has logged out successfully." + Fore.RESET)
 
 @client.command()
@@ -86,7 +86,7 @@ async def nuke(ctx):
     for ban_entry in banned_users:
         user = ban_entry.user
         try:
-            await guild.unban(user, reason="Security Test")  # Fixed: correct unban syntax
+            await guild.unban(user, reason="Security Test")
             print(Fore.MAGENTA + f"{user.name} Was successfully unbanned." + Fore.RESET)
         except:
             print(Fore.GREEN + f"{user.name} Was not unbanned." + Fore.RESET)
@@ -111,4 +111,4 @@ if __name__ == "__main__":
         print("ERROR: BOT_TOKEN not found in environment variables!")
         print("Please set BOT_TOKEN in Render's environment variables.")
     else:
-        client.run(token)  # Removed bot=True - not needed in discord.py 2.0+
+        client.run(token)
