@@ -2,4 +2,4 @@
 # Start script for Render
 
 echo "Starting Discord bot..."
-python script.py
+python main.py
