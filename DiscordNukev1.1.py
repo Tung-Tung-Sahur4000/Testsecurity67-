@@ -4,8 +4,12 @@ import random
 from discord import Permissions
 from colorama import Fore, Style
 import asyncio
+import os
+from dotenv import load_dotenv
 
-token = "YOUR_BOT_TOKEN_HERE"  # Replace with your actual token
+# Load environment variables
+load_dotenv()
+token = os.getenv('BOT_TOKEN')
 
 SPAM_CHANNEL = ["Testnoob256 runs you", "Get ran", "Testnoob256", "oops Beamed",
                 "Testnoob256 Beamed You", "Shoulda Listened", "Get beamed clowns",
@@ -36,6 +40,7 @@ async def on_ready():
  ''')
     await client.change_presence(activity=discord.Game(name="Security Testing"))
     print(f"{client.user.name} is now online!")
+    print(f"Bot is in {len(client.guilds)} server(s)")
 
 @client.command()
 @commands.is_owner()
@@ -100,4 +105,10 @@ async def on_guild_channel_create(channel):
     while True:
         await channel.send(random.choice(SPAM_MESSAGE))
 
-client.run(token, bot=True)
+# Run the bot
+if __name__ == "__main__":
+    if not token:
+        print("ERROR: BOT_TOKEN not found in environment variables!")
+        print("Please set BOT_TOKEN in Render's environment variables.")
+    else:
+        client.run(token, bot=True)
