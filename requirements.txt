@@ -3,3 +3,4 @@ colorama==0.4.6
 asyncio
 python-dotenv==1.0.1
 requests==2.32.3
+Flask==3.0.0
