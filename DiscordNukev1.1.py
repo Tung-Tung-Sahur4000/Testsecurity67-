@@ -5,7 +5,7 @@ from discord import Permissions
 from colorama import Fore, Style
 import asyncio
 
-token = "MTQ0NDc0MTEwNDY1NzM3MTI4Ng.G6jdO8.adhhTV9anIc_UXQDkHkRdIR9K0uUVscMlZCdQQ"  # Replace with your actual token
+token = "YOUR_BOT_TOKEN_HERE"  # Replace with your actual token
 
 SPAM_CHANNEL = ["Testnoob256 runs you", "Get ran", "Testnoob256", "oops Beamed",
                 "Testnoob256 Beamed You", "Shoulda Listened", "Get beamed clowns",
