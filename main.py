@@ -111,4 +111,4 @@ if __name__ == "__main__":
         print("ERROR: BOT_TOKEN not found in environment variables!")
         print("Please set BOT_TOKEN in Render's environment variables.")
     else:
-        client.run(token, bot=True)
+        client.run(token)  # Removed bot=True - not needed in discord.py 2.0+
